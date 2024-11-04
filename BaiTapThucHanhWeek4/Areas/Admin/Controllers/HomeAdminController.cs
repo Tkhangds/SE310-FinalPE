@@ -70,6 +70,7 @@ namespace BaiTapThucHanhWeek4.Areas.Admin.Controllers
             var sanPham = db.TDanhMucSps.Find(maSanPham);
             return View(sanPham);
         }
+
         [Route("SuaSanPham")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -112,6 +113,17 @@ namespace BaiTapThucHanhWeek4.Areas.Admin.Controllers
             var anhSanPham = db.TAnhSps.Where(x => x.MaSp == maSanPham).ToList();
             ViewBag.anhSanPham = anhSanPham;
             return View(sanpham);
+        }
+
+        [Route("danhsachnguoidung")]
+        public IActionResult DanhSachNguoiDung(int? page)
+        {
+            int pageSize = 8;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstuser = db.TUsers.AsNoTracking().OrderBy(x => x.Username);
+            PagedList<TUser> lst = new PagedList<TUser>(lstuser, pageNumber, pageSize);
+
+            return View(lst);
         }
     }
 }
